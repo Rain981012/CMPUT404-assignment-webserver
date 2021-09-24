@@ -66,6 +66,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
             self.request.sendall("HTTP/1.1 404 Not Found\r\n\r\n".encode())
         addr_path = os.path.abspath('www') + address
         
+        
         if path.isdir(addr_path) == True:
             #If the path not include with /, we will redirect the path
             if not addr_path.endswith('/'):
@@ -74,12 +75,13 @@ class MyWebServer(socketserver.BaseRequestHandler):
                 self.request.sendall(header.encode())
                 addr_path += '/'
             #If the path end with /, then we will read the file and send it
-            #else:
             addr_path += 'index.html'
             content_type  = 'text/html'
             header = (f"HTTP/1.1 200 OK\r\nContent-type: {content_type}\r\n\r\n")
             response = self.get_file(addr_path)
             self.request.sendall(f"{header + response}".encode()) 
+
+        
         elif path.isfile(addr_path) == True:
             if addr_path.endswith(".css") == True:
                 content_type = 'text/css'
